@@ -7,6 +7,7 @@ CUMULUS = {
     'AUTH_URL': 'us_authurl',
     'CNAMES': None,
     'CONTAINER': None,
+    'CONTAINER_URI': None,
     'SERVICENET': False,
     'TIMEOUT': 5,
     'TTL': 600,

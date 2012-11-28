@@ -78,13 +78,18 @@ class CloudFilesStorage(Storage):
     container = property(_get_container, _set_container)
 
     def _get_container_url(self):
+        if CUMULUS['CONTAINER_URI'] is not None:
+            return CUMULUS['CONTAINER_URI']
+
         if not hasattr(self, '_container_public_uri'):
             if self.use_ssl:
                 self._container_public_uri = self.container.public_ssl_uri()
             else:
                 self._container_public_uri = self.container.public_uri()
+
         if CUMULUS['CNAMES'] and self._container_public_uri in CUMULUS['CNAMES']:
             self._container_public_uri = CUMULUS['CNAMES'][self._container_public_uri]
+
         return self._container_public_uri
 
     container_url = property(_get_container_url)
@@ -286,7 +291,7 @@ class CloudFilesStorageFile(File):
 
     file = property(_get_file, _set_file)
 
-    def read(self, num_bytes=None):
+    def read(self, num_bytes=0):
         if self._pos == self._get_size():
             return ""
         if num_bytes and self._pos + num_bytes > self._get_size():
